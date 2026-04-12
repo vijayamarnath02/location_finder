@@ -24,11 +24,13 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
 
   map: any;
   marker: any;
+  accuracyCircle: any;
   locationDetails: LocationDetails | null = null;
   isLoading = false;
   errorMessage = '';
   locationDenied = false;
   mapInitialized = false;
+  accuracy: number = 0;
 
   constructor(
     private geocodingService: GeocodingService,
@@ -76,6 +78,18 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
         }
       });
 
+      // Blue accuracy circle around the marker
+      this.accuracyCircle = new google.maps.Circle({
+        map: this.map,
+        center: { lat, lng },
+        radius: this.accuracy || 30,
+        fillColor: '#4285F4',
+        fillOpacity: 0.15,
+        strokeColor: '#4285F4',
+        strokeOpacity: 0.4,
+        strokeWeight: 1
+      });
+
       this.mapInitialized = true;
     });
   }
@@ -87,9 +101,13 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
     }
     const position = new google.maps.LatLng(lat, lng);
     this.map.setCenter(position);
-    this.map.setZoom(18);
+    this.map.setZoom(19);
     this.marker.setPosition(position);
     this.marker.setAnimation(google.maps.Animation.DROP);
+    if (this.accuracyCircle) {
+      this.accuracyCircle.setCenter(position);
+      this.accuracyCircle.setRadius(this.accuracy || 30);
+    }
   }
 
   async detectMyLocation(): Promise<void> {
@@ -98,9 +116,10 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
     this.locationDenied = false;
 
     try {
-      const position = await this.geocodingService.getCurrentPosition();
+      const position = await this.geocodingService.getAccuratePosition();
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
+      this.accuracy = Math.round(position.coords.accuracy);
 
       const details = await this.geocodingService.reverseGeocode(lat, lng);
       this.locationDetails = details;
@@ -111,7 +130,6 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
     } catch (error: any) {
       this.isLoading = false;
       if (error.code && (error.code === 1 || error.code === 2)) {
-        // Permission denied or position unavailable — location is off
         this.locationDenied = true;
       } else {
         this.errorMessage = this.getGeolocationErrorMessage(error);

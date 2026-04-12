@@ -293,11 +293,30 @@
     font-weight: 600;
     color: #202124;
     margin: 0 0 20px 0;
+    flex-wrap: wrap;
 
     .material-icons {
       color: #1a73e8;
       font-size: 24px;
     }
+  }
+}
+
+.accuracy-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #e6f4ea;
+  color: #137333;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-left: auto;
+
+  .material-icons {
+    font-size: 14px !important;
+    color: #137333 !important;
   }
 }
 
