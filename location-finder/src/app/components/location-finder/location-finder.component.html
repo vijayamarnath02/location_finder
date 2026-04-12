@@ -37,6 +37,10 @@
   <div class="error-message" *ngIf="errorMessage && !locationDenied">
     <span class="material-icons">error_outline</span>
     {{ errorMessage }}
+    <button class="btn btn-retry-small" (click)="detectMyLocation()">
+      <span class="material-icons">refresh</span>
+      Retry
+    </button>
   </div>
 
   <!-- Main Content (only shown when location is detected) -->
@@ -168,10 +172,5 @@
         </button>
       </div>
     </div>
-  </div>
-
-  <!-- Hidden map container when location not yet detected -->
-  <div [style.display]="locationDetails && !locationDenied ? 'none' : 'none'">
-    <div #mapContainer class="map-container" style="width:1px;height:1px;"></div>
   </div>
 </div>
