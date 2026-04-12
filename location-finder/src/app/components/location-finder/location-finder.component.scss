@@ -254,6 +254,27 @@
   }
 }
 
+// Low accuracy warning
+.low-accuracy-warning {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: #fef7e0;
+  border: 1px solid #f9ab00;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #3c4043;
+  line-height: 1.5;
+
+  .material-icons {
+    color: #f9ab00;
+    font-size: 24px;
+    margin-top: 2px;
+  }
+}
+
 // Refresh Bar
 .refresh-bar {
   grid-column: 1 / -1;
@@ -306,8 +327,6 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #e6f4ea;
-  color: #137333;
   font-size: 12px;
   font-weight: 500;
   padding: 4px 10px;
@@ -316,7 +335,24 @@
 
   .material-icons {
     font-size: 14px !important;
-    color: #137333 !important;
+  }
+
+  &.good {
+    background: #e6f4ea;
+    color: #137333;
+    .material-icons { color: #137333 !important; }
+  }
+
+  &.medium {
+    background: #fef7e0;
+    color: #b06000;
+    .material-icons { color: #b06000 !important; }
+  }
+
+  &.poor {
+    background: #fce8e6;
+    color: #c5221f;
+    .material-icons { color: #c5221f !important; }
   }
 }
 

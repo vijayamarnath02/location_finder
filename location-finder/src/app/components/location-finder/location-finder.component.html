@@ -45,6 +45,15 @@
 
   <!-- Main Content (only shown when location is detected) -->
   <div class="main-content" *ngIf="locationDetails && !locationDenied">
+    <!-- Low accuracy warning -->
+    <div class="low-accuracy-warning" *ngIf="accuracy > 500">
+      <span class="material-icons">warning</span>
+      <div>
+        <strong>Low accuracy ({{ accuracy }}m)</strong> — You are on a desktop/laptop which uses IP-based location.
+        Open this link on your <strong>mobile phone with GPS ON</strong> for exact address.
+      </div>
+    </div>
+
     <!-- Refresh button -->
     <div class="refresh-bar">
       <button class="btn btn-detect" (click)="detectMyLocation()" [disabled]="isLoading">
@@ -63,8 +72,8 @@
       <h2>
         <span class="material-icons">place</span>
         Your Location
-        <span class="accuracy-badge" *ngIf="accuracy">
-          <span class="material-icons">gps_fixed</span>
+        <span class="accuracy-badge" [ngClass]="{'good': accuracy <= 100, 'medium': accuracy > 100 && accuracy <= 500, 'poor': accuracy > 500}" *ngIf="accuracy">
+          <span class="material-icons">{{ accuracy <= 100 ? 'gps_fixed' : 'gps_not_fixed' }}</span>
           {{ accuracy }}m accuracy
         </span>
       </h2>
