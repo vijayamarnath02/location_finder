@@ -4,61 +4,61 @@
     <div class="header-content">
       <span class="material-icons header-icon">location_on</span>
       <h1>Location Finder</h1>
-      <p>Get exact address, city, state, and area from any location</p>
+      <p>Get exact address, city, state, and area from your location</p>
     </div>
   </header>
 
-  <!-- Search Bar -->
-  <div class="search-section">
-    <div class="search-bar">
-      <span class="material-icons search-icon">search</span>
-      <input
-        #searchInput
-        type="text"
-        [(ngModel)]="searchQuery"
-        placeholder="Search for any address, city, or place..."
-        (keyup.enter)="searchLocation()"
-        class="search-input"
-      />
-      <button class="btn btn-search" (click)="searchLocation()" [disabled]="isLoading">
-        <span class="material-icons">search</span>
-        Search
+  <!-- Location Permission Prompt -->
+  <div class="permission-prompt" *ngIf="locationDenied">
+    <div class="permission-card">
+      <span class="material-icons permission-icon">location_off</span>
+      <h2>Location Access Required</h2>
+      <p>Your location is turned off or permission was denied. Please enable location services to use this app.</p>
+      <div class="permission-steps">
+        <h3>How to enable:</h3>
+        <div class="step"><span class="step-num">1</span> Open your device <strong>Settings</strong></div>
+        <div class="step"><span class="step-num">2</span> Go to <strong>Location</strong> and turn it <strong>ON</strong></div>
+        <div class="step"><span class="step-num">3</span> In your browser, allow location permission for this site</div>
+      </div>
+      <button class="btn btn-retry" (click)="detectMyLocation()">
+        <span class="material-icons">refresh</span>
+        Try Again
       </button>
     </div>
-    <button class="btn btn-detect" (click)="detectMyLocation()" [disabled]="isLoading">
-      <span class="material-icons">my_location</span>
-      {{ isLoading ? 'Detecting...' : 'Detect My Location' }}
-    </button>
-  </div>
-
-  <!-- Error Message -->
-  <div class="error-message" *ngIf="errorMessage">
-    <span class="material-icons">error_outline</span>
-    {{ errorMessage }}
   </div>
 
   <!-- Loading -->
   <div class="loading" *ngIf="isLoading">
     <div class="spinner"></div>
-    <span>Fetching location details...</span>
+    <span>Detecting your location...</span>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
+  <!-- Error Message (non-permission errors) -->
+  <div class="error-message" *ngIf="errorMessage && !locationDenied">
+    <span class="material-icons">error_outline</span>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Main Content (only shown when location is detected) -->
+  <div class="main-content" *ngIf="locationDetails && !locationDenied">
+    <!-- Refresh button -->
+    <div class="refresh-bar">
+      <button class="btn btn-detect" (click)="detectMyLocation()" [disabled]="isLoading">
+        <span class="material-icons">my_location</span>
+        {{ isLoading ? 'Detecting...' : 'Refresh My Location' }}
+      </button>
+    </div>
+
     <!-- Map -->
     <div class="map-section">
       <div #mapContainer class="map-container"></div>
-      <div class="map-hint">
-        <span class="material-icons">info_outline</span>
-        Click anywhere on the map or drag the marker to get location details
-      </div>
     </div>
 
     <!-- Location Details -->
-    <div class="details-section" *ngIf="locationDetails">
+    <div class="details-section">
       <h2>
         <span class="material-icons">place</span>
-        Location Details
+        Your Location
       </h2>
 
       <div class="details-grid">
@@ -168,5 +168,10 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <!-- Hidden map container when location not yet detected -->
+  <div [style.display]="locationDetails && !locationDenied ? 'none' : 'none'">
+    <div #mapContainer class="map-container" style="width:1px;height:1px;"></div>
   </div>
 </div>
