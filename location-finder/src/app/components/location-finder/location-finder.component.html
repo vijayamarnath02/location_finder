@@ -1,0 +1,172 @@
+<div class="location-finder">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <span class="material-icons header-icon">location_on</span>
+      <h1>Location Finder</h1>
+      <p>Get exact address, city, state, and area from any location</p>
+    </div>
+  </header>
+
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-bar">
+      <span class="material-icons search-icon">search</span>
+      <input
+        #searchInput
+        type="text"
+        [(ngModel)]="searchQuery"
+        placeholder="Search for any address, city, or place..."
+        (keyup.enter)="searchLocation()"
+        class="search-input"
+      />
+      <button class="btn btn-search" (click)="searchLocation()" [disabled]="isLoading">
+        <span class="material-icons">search</span>
+        Search
+      </button>
+    </div>
+    <button class="btn btn-detect" (click)="detectMyLocation()" [disabled]="isLoading">
+      <span class="material-icons">my_location</span>
+      {{ isLoading ? 'Detecting...' : 'Detect My Location' }}
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div class="error-message" *ngIf="errorMessage">
+    <span class="material-icons">error_outline</span>
+    {{ errorMessage }}
+  </div>
+
+  <!-- Loading -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <span>Fetching location details...</span>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Map -->
+    <div class="map-section">
+      <div #mapContainer class="map-container"></div>
+      <div class="map-hint">
+        <span class="material-icons">info_outline</span>
+        Click anywhere on the map or drag the marker to get location details
+      </div>
+    </div>
+
+    <!-- Location Details -->
+    <div class="details-section" *ngIf="locationDetails">
+      <h2>
+        <span class="material-icons">place</span>
+        Location Details
+      </h2>
+
+      <div class="details-grid">
+        <!-- Full Address -->
+        <div class="detail-card full-width">
+          <div class="detail-label">
+            <span class="material-icons">home</span>
+            Full Address
+          </div>
+          <div class="detail-value">{{ locationDetails.fullAddress }}</div>
+          <button class="copy-btn" (click)="copyToClipboard(locationDetails.fullAddress)" title="Copy">
+            <span class="material-icons">content_copy</span>
+          </button>
+        </div>
+
+        <!-- Area Name -->
+        <div class="detail-card" *ngIf="locationDetails.areaName">
+          <div class="detail-label">
+            <span class="material-icons">map</span>
+            Area / Locality
+          </div>
+          <div class="detail-value">{{ locationDetails.areaName }}</div>
+        </div>
+
+        <!-- City -->
+        <div class="detail-card">
+          <div class="detail-label">
+            <span class="material-icons">location_city</span>
+            City
+          </div>
+          <div class="detail-value">{{ locationDetails.city || 'N/A' }}</div>
+        </div>
+
+        <!-- District -->
+        <div class="detail-card" *ngIf="locationDetails.district">
+          <div class="detail-label">
+            <span class="material-icons">domain</span>
+            District
+          </div>
+          <div class="detail-value">{{ locationDetails.district }}</div>
+        </div>
+
+        <!-- State -->
+        <div class="detail-card">
+          <div class="detail-label">
+            <span class="material-icons">flag</span>
+            State
+          </div>
+          <div class="detail-value">{{ locationDetails.state || 'N/A' }}</div>
+        </div>
+
+        <!-- Country -->
+        <div class="detail-card">
+          <div class="detail-label">
+            <span class="material-icons">public</span>
+            Country
+          </div>
+          <div class="detail-value">{{ locationDetails.country || 'N/A' }}</div>
+        </div>
+
+        <!-- Postal Code -->
+        <div class="detail-card" *ngIf="locationDetails.postalCode">
+          <div class="detail-label">
+            <span class="material-icons">markunread_mailbox</span>
+            Postal Code
+          </div>
+          <div class="detail-value">{{ locationDetails.postalCode }}</div>
+        </div>
+
+        <!-- Street -->
+        <div class="detail-card" *ngIf="locationDetails.streetName">
+          <div class="detail-label">
+            <span class="material-icons">signpost</span>
+            Street
+          </div>
+          <div class="detail-value">
+            {{ locationDetails.streetNumber ? locationDetails.streetNumber + ', ' : '' }}{{ locationDetails.streetName }}
+          </div>
+        </div>
+
+        <!-- Coordinates -->
+        <div class="detail-card">
+          <div class="detail-label">
+            <span class="material-icons">gps_fixed</span>
+            Latitude
+          </div>
+          <div class="detail-value">{{ locationDetails.latitude.toFixed(6) }}</div>
+        </div>
+
+        <div class="detail-card">
+          <div class="detail-label">
+            <span class="material-icons">gps_fixed</span>
+            Longitude
+          </div>
+          <div class="detail-value">{{ locationDetails.longitude.toFixed(6) }}</div>
+        </div>
+      </div>
+
+      <!-- Coordinates Copy -->
+      <div class="coordinates-bar">
+        <span>
+          <strong>Coordinates:</strong> {{ locationDetails.latitude.toFixed(6) }}, {{ locationDetails.longitude.toFixed(6) }}
+        </span>
+        <button class="copy-btn" (click)="copyToClipboard(locationDetails.latitude.toFixed(6) + ', ' + locationDetails.longitude.toFixed(6))" title="Copy coordinates">
+          <span class="material-icons">content_copy</span>
+          Copy
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
