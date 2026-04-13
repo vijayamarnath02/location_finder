@@ -186,6 +186,12 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  onRadiusChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    const distance = Number(selectElement.value);
+    this.updateRadiusDistance(distance);
+  }
+
   private getMapStyles(): any[] {
     return [
       {

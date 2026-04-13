@@ -74,7 +74,7 @@
       </div>
       <div class="radius-picker" *ngIf="showRadius">
         <label>Radius:</label>
-        <select (change)="updateRadiusDistance(+($event.target as HTMLSelectElement).value)" [value]="radiusDistance">
+        <select (change)="onRadiusChange($event)" [value]="radiusDistance">
           <option value="1000">1 km</option>
           <option value="2000">2 km</option>
           <option value="3000">3 km</option>
