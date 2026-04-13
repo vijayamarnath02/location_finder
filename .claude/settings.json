@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npm list:*)",
-      "Bash(ng new:*)"
+      "Bash(ng new:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(netlify --version)",
+      "Bash(netlify deploy:*)",
+      "Bash(netlify login:*)"
     ]
   }
 }
