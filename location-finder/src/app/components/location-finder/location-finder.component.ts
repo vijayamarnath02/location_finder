@@ -1,14 +1,14 @@
-import {
-  Component,
-  OnInit,
-  AfterViewInit,
-  ViewChild,
-  ElementRef,
-  NgZone
-} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GeocodingService } from '../../services/geocoding.service';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { LocationDetails } from '../../models/location.model';
+import { GeocodingService } from '../../services/geocoding.service';
 
 declare var google: any;
 
@@ -25,19 +25,22 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
   map: any;
   marker: any;
   accuracyCircle: any;
+  radiusCircle: any;
   locationDetails: LocationDetails | null = null;
   isLoading = false;
   errorMessage = '';
   locationDenied = false;
   mapInitialized = false;
   accuracy: number = 0;
+  showRadius = false;
+  radiusDistance = 5000; // 5km in meters
 
   constructor(
     private geocodingService: GeocodingService,
     private ngZone: NgZone
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.detectMyLocation();
@@ -90,6 +93,19 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
         strokeWeight: 1
       });
 
+      // 5km radius circle (initially hidden)
+      this.radiusCircle = new google.maps.Circle({
+        map: this.showRadius ? this.map : null,
+        center: { lat, lng },
+        radius: this.radiusDistance,
+        fillColor: '#FF6B6B',
+        fillOpacity: 0.08,
+        strokeColor: '#FF6B6B',
+        strokeOpacity: 0.6,
+        strokeWeight: 2,
+        strokeDashArray: [10, 5]
+      });
+
       this.mapInitialized = true;
     });
   }
@@ -107,6 +123,9 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
     if (this.accuracyCircle) {
       this.accuracyCircle.setCenter(position);
       this.accuracyCircle.setRadius(this.accuracy || 30);
+    }
+    if (this.radiusCircle) {
+      this.radiusCircle.setCenter(position);
     }
   }
 
@@ -151,6 +170,20 @@ export class LocationFinderComponent implements OnInit, AfterViewInit {
 
   copyToClipboard(text: string): void {
     navigator.clipboard.writeText(text);
+  }
+
+  toggleRadius(): void {
+    this.showRadius = !this.showRadius;
+    if (this.radiusCircle) {
+      this.radiusCircle.setMap(this.showRadius ? this.map : null);
+    }
+  }
+
+  updateRadiusDistance(distance: number): void {
+    this.radiusDistance = distance;
+    if (this.radiusCircle) {
+      this.radiusCircle.setRadius(this.radiusDistance);
+    }
   }
 
   private getMapStyles(): any[] {

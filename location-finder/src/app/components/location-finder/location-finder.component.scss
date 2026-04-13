@@ -1,6 +1,6 @@
 :host {
   display: block;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .location-finder {
@@ -135,7 +135,7 @@
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   transition: background 0.2s ease;
 
   .material-icons {
@@ -159,7 +159,7 @@
   align-items: center;
   gap: 4px;
   font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   margin-left: auto;
 
   .material-icons {
@@ -181,7 +181,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   white-space: nowrap;
 
   .material-icons {
@@ -282,6 +282,80 @@
   justify-content: center;
 }
 
+// Radius Controls
+.radius-controls {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  .radius-toggle {
+    display: flex;
+    justify-content: center;
+  }
+
+  .radius-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #5f6368;
+
+    label {
+      font-weight: 500;
+      color: #202124;
+    }
+
+    select {
+      padding: 6px 12px;
+      border: 2px solid #dadce0;
+      border-radius: 8px;
+      background: white;
+      color: #202124;
+      font-size: 14px;
+      font-family: "Inter", sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #1a73e8;
+      }
+
+      &:hover {
+        border-color: #bdc1c6;
+      }
+    }
+  }
+}
+
+.btn-radius {
+  background: white;
+  color: #ff6b6b;
+  padding: 12px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 2px solid #ff6b6b;
+
+  &:hover:not(:disabled) {
+    background: #ffeaea;
+  }
+
+  &.active {
+    background: #ff6b6b;
+    color: white;
+
+    &:hover {
+      background: #ff5555;
+    }
+  }
+}
+
 // Main Content
 .main-content {
   max-width: 1200px;
@@ -340,19 +414,25 @@
   &.good {
     background: #e6f4ea;
     color: #137333;
-    .material-icons { color: #137333 !important; }
+    .material-icons {
+      color: #137333 !important;
+    }
   }
 
   &.medium {
     background: #fef7e0;
     color: #b06000;
-    .material-icons { color: #b06000 !important; }
+    .material-icons {
+      color: #b06000 !important;
+    }
   }
 
   &.poor {
     background: #fce8e6;
     color: #c5221f;
-    .material-icons { color: #c5221f !important; }
+    .material-icons {
+      color: #c5221f !important;
+    }
   }
 }
 
@@ -372,7 +452,9 @@
   padding: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -424,7 +506,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 
   .material-icons {
     font-size: 14px;
@@ -498,5 +580,25 @@
     flex-direction: column;
     gap: 10px;
     text-align: center;
+  }
+
+  .radius-controls {
+    margin: 0 -4px;
+    padding: 12px;
+
+    .radius-picker {
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+
+      select {
+        width: 120px;
+      }
+    }
+  }
+
+  .btn-radius {
+    font-size: 13px;
+    padding: 10px 16px;
   }
 }

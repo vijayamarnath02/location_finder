@@ -17,7 +17,9 @@
       <div class="permission-steps">
         <h3>How to enable:</h3>
         <div class="step"><span class="step-num">1</span> Open your device <strong>Settings</strong></div>
-        <div class="step"><span class="step-num">2</span> Go to <strong>Location</strong> and turn it <strong>ON</strong></div>
+        <div class="step"><span class="step-num">2</span> Go to <strong>Location</strong> and turn it
+          <strong>ON</strong>
+        </div>
         <div class="step"><span class="step-num">3</span> In your browser, allow location permission for this site</div>
       </div>
       <button class="btn btn-retry" (click)="detectMyLocation()">
@@ -62,6 +64,28 @@
       </button>
     </div>
 
+    <!-- Radius Controls -->
+    <div class="radius-controls">
+      <div class="radius-toggle">
+        <button class="btn btn-radius" (click)="toggleRadius()" [class.active]="showRadius">
+          <span class="material-icons">radio_button_unchecked</span>
+          <span>{{ showRadius ? 'Hide' : 'Show' }} {{ radiusDistance/1000 }}km Radius</span>
+        </button>
+      </div>
+      <div class="radius-picker" *ngIf="showRadius">
+        <label>Radius:</label>
+        <select (change)="updateRadiusDistance(+($event.target as HTMLSelectElement).value)" [value]="radiusDistance">
+          <option value="1000">1 km</option>
+          <option value="2000">2 km</option>
+          <option value="3000">3 km</option>
+          <option value="5000">5 km</option>
+          <option value="10000">10 km</option>
+          <option value="15000">15 km</option>
+          <option value="20000">20 km</option>
+        </select>
+      </div>
+    </div>
+
     <!-- Map -->
     <div class="map-section">
       <div #mapContainer class="map-container"></div>
@@ -72,10 +96,12 @@
       <h2>
         <span class="material-icons">place</span>
         Your Location
-        <span class="accuracy-badge" [ngClass]="{'good': accuracy <= 100, 'medium': accuracy > 100 && accuracy <= 500, 'poor': accuracy > 500}" *ngIf="accuracy">
+        <span class="accuracy-badge"
+          [ngClass]="{'good': accuracy <= 100, 'medium': accuracy > 100 && accuracy <= 500, 'poor': accuracy > 500}"
+          *ngIf="accuracy">
           <span class="material-icons">{{ accuracy <= 100 ? 'gps_fixed' : 'gps_not_fixed' }}</span>
-          {{ accuracy }}m accuracy
-        </span>
+              {{ accuracy }}m accuracy
+          </span>
       </h2>
 
       <div class="details-grid">
@@ -152,7 +178,8 @@
             Street
           </div>
           <div class="detail-value">
-            {{ locationDetails.streetNumber ? locationDetails.streetNumber + ', ' : '' }}{{ locationDetails.streetName }}
+            {{ locationDetails.streetNumber ? locationDetails.streetNumber + ', ' : '' }}{{ locationDetails.streetName
+            }}
           </div>
         </div>
 
@@ -177,9 +204,12 @@
       <!-- Coordinates Copy -->
       <div class="coordinates-bar">
         <span>
-          <strong>Coordinates:</strong> {{ locationDetails.latitude.toFixed(6) }}, {{ locationDetails.longitude.toFixed(6) }}
+          <strong>Coordinates:</strong> {{ locationDetails.latitude.toFixed(6) }}, {{
+          locationDetails.longitude.toFixed(6) }}
         </span>
-        <button class="copy-btn" (click)="copyToClipboard(locationDetails.latitude.toFixed(6) + ', ' + locationDetails.longitude.toFixed(6))" title="Copy coordinates">
+        <button class="copy-btn"
+          (click)="copyToClipboard(locationDetails.latitude.toFixed(6) + ', ' + locationDetails.longitude.toFixed(6))"
+          title="Copy coordinates">
           <span class="material-icons">content_copy</span>
           Copy
         </button>
